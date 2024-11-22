@@ -10,7 +10,8 @@
   <body>
     <header id="header">
       <h1>Hyrule compendium</h1>
-      <input type="search" id="search" />
+      <button id="search-btn">Search</button>
+      <!-- <input type="search" id="search" /> -->
       <!-- <form id="search">
         <input type="search" name="user-input" id="user-input" />
         <input type="submit" value="Search" />
@@ -19,10 +20,10 @@
         <option value="botw">Breath of the Wild</option>
         <option value="totk">Tears of the Kingdom</option>
       </select> -->
-      <div id="master-container">
+      <!-- <div id="master-container">
         <input type="checkbox" id="master-toggle" />
         <label for="master-toggle">Master mode</label>
-      </div>
+      </div> -->
       <select name="category" id="category">
         <option value="creatures">Creatures</option>
         <option value="equipment">Equipment</option>
@@ -32,5 +33,6 @@
       </select>
     </header>
     <main id="container"></main>
+    <dialog id="item-info"></dialog>
   </body>
 </html>

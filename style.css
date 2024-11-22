@@ -3,10 +3,10 @@
   padding: 0;
   box-sizing: border-box;
 }
-/* 
+
 .invisible {
   visibility: hidden;
-} */
+}
 
 .list-item {
   display: flex;
