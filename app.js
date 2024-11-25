@@ -1,69 +1,67 @@
-// const searchFrom = document.querySelector("#search");
-// const searchInput = document.querySelector("#search");
 const searchBtn = document.querySelector("#search-btn");
-// const gameSelector = document.querySelector("#game-selector");
 const container = document.querySelector("#container");
-// const masterToggle = document.querySelector("#master-toggle");
-// const masterContainer = document.querySelector("#master-container");
 const categorySelector = document.querySelector("#category");
 const itemInfo = document.querySelector("#item-info");
-const header = document.querySelector("#header");
+const ui = document.querySelector("#ui");
+const itemtxtConatiner = document.querySelector("#txt-container");
+const itemImg = document.querySelector("#item-img");
+const searchImg = document.querySelector("#search-img");
+
+const apiEndpoint = "https://botw-compendium.herokuapp.com/api/v3/compendium";
 
 let searchText = "";
 let searchInput = null;
 
-// let masterText = "";
-
-/* if (gameSelector.value === "totk") masterContainer.classList.add("invisible");
-
-gameSelector.addEventListener("change", () => {
-  masterContainer.classList.toggle("invisible");
-  getdata("category", categorySelector.value);
-}); */
+//loads data on pageload
+getdata(`category/${categorySelector.value}`);
 
 searchBtn.addEventListener("click", () => {
+  //makes the category selector invisible
   categorySelector.classList.toggle("invisible");
+  //changes the styling on the button
+  searchBtn.classList.toggle("close");
+  //if the search bar already exist removes it
   if (searchInput) {
     searchInput.remove();
     searchInput = null;
     searchText = "";
+    //changes icon on search button
+    searchImg.src = "Images/magnifying-glass.svg";
     getdata(`category/${categorySelector.value}`);
   } else {
+    //changes icon on search button
+    searchImg.src = "Images/cross.svg";
+    //creates the search bar if it doesnt exist
     searchInput = document.createElement("input");
     searchInput.type = "search";
+    searchInput.id = "search-input";
     getdata("all");
+    //refreshes the list after every input
     searchInput.addEventListener("input", () => {
       getdata("all");
       searchText = searchInput.value;
     });
-    header.append(searchInput);
+    ui.prepend(searchInput);
+    searchInput.focus();
   }
 });
 
-// masterToggle.addEventListener("change", () => {
-//   // masterText = masterToggle.checked ? "/master_mode" : "";
-//   //master_mode/entry/
-//   getdata("master_mode/all");
-// });
-
-// searchFrom.addEventListener("submit", (e) => {
-//   e.preventDefault();
-// });
-
+//refreshes list when the category selector changes
 categorySelector.addEventListener("change", () => {
   getdata(`category/${categorySelector.value}`);
 });
 
-const apiEndpoint = "https://botw-compendium.herokuapp.com/api/v3/compendium";
-
+//function for fetching data
 async function getdata(dataType) {
   try {
     const result = await fetch(`${apiEndpoint}/${dataType}`);
     const data = await result.json();
 
     if (Array.isArray(data.data)) {
+      //refreshes the list if it recieves and array
       generateCategory(data.data);
     } else {
+      //creates a modal when it recieves data for a single entry
       generateSingle(data.data);
     }
   } catch (error) {
@@ -71,43 +69,56 @@ async function getdata(dataType) {
   }
 }
 
-getdata(`category/${categorySelector.value}`);
-
 function generateCategory(data) {
+  //filters the list when searching
   const filteredData = data.filter((item) => item.name.includes(searchText));
+  //empties the list
   while (container.firstChild) container.firstChild.remove();
+  //goes through the recieved array
   filteredData.forEach((item) => {
+    //creates the entries
     const itemContainer = document.createElement("div");
+    //classes for styling
     itemContainer.classList.add("list-item");
+    itemContainer.classList.add("flex");
 
+    //fetches and displays it's own data when clicked
     itemContainer.addEventListener("click", () => getdata(`entry/${item.id}`));
 
+    //creates this entry's image
     const itemImg = document.createElement("img");
     itemImg.src = item.image;
 
+    //creates the entry's name
     const itemName = document.createElement("p");
     itemName.textContent = wordsToUpperCase(item.name);
 
+    //appending
     itemContainer.append(itemImg, itemName);
     container.append(itemContainer);
   });
 }
 
 function generateSingle(data) {
-  while (itemInfo.firstChild) itemInfo.firstChild.remove();
+  //removes previous text
+  while (itemtxtConatiner.firstChild) itemtxtConatiner.firstChild.remove();
 
-  const itemImg = document.createElement("img");
+  //updates the image source
   itemImg.src = data.image;
 
+  //creates the entry's title
   const itemName = document.createElement("h2");
   itemName.textContent = wordsToUpperCase(data.name);
 
+  //creates description
   const itemDesc = document.createElement("p");
   itemDesc.textContent = data.description;
 
+  //creates locations list
   const itemLocations = document.createElement("ul");
   itemLocations.textContent = "Locations:";
 
+  //if there are common locations puts them under the locations list
   if (data.common_locations) {
     data.common_locations.forEach((loc) => {
       const location = document.createElement("li");
@@ -115,12 +126,14 @@ function generateSingle(data) {
       itemLocations.append(location);
     });
   } else {
+    //if there are no common locations sets the location as "Unkown"
     const location = document.createElement("li");
     location.textContent = "Unkown";
     itemLocations.append(location);
   }
 
-  itemInfo.append(itemImg, itemName, itemDesc, itemLocations);
+  //appending
+  itemtxtConatiner.append(itemName, itemDesc, itemLocations);
 
   if (data.drops) {
     const itemDrops = document.createElement("ul");
@@ -130,36 +143,44 @@ function generateSingle(data) {
       location.textContent = wordsToUpperCase(drop);
       itemDrops.append(location);
     });
-    itemInfo.append(itemDrops);
+    itemtxtConatiner.append(itemDrops);
   }
 
   if (data.properties) {
     if (data.properties.attack > 0) {
       const itemAttack = document.createElement("p");
-      itemAttack.textContent = `Attack Damage: ${data.properties.attack}`;
-      itemInfo.append(itemAttack);
+      itemAttack.textContent = `Attack Power: ${data.properties.attack}`;
+      itemtxtConatiner.append(itemAttack);
     }
     if (data.properties.defense > 0) {
       const itemDefense = document.createElement("p");
       itemDefense.textContent = `Defense: ${data.properties.defense}`;
-      itemInfo.append(itemDefense);
+      itemtxtConatiner.append(itemDefense);
     }
   }
 
   if (data.hearts_recovered) {
-    const heartsRecoveredLabel = document.createElement("p");
+    /* const heartsRecoveredLabel = document.createElement("p");
     heartsRecoveredLabel.textContent = "Hearts Recovered:";
     const heartsRecovered = document.createElement("p");
     heartsRecovered.textContent = data.hearts_recovered;
-    itemInfo.append(heartsRecoveredLabel, heartsRecovered);
+    itemtxtConatiner.append(heartsRecoveredLabel, heartsRecovered); */
+    const heartsRecovered = document.createElement("p");
+    heartsRecovered.textContent = `Hearts Recovered: ${data.hearts_recovered}`;
+    itemtxtConatiner.append(heartsRecovered);
   }
 
   if (data.cooking_effect) {
-    const cookingEffectLabel = document.createElement("p");
+    /*   const cookingEffectLabel = document.createElement("p");
     cookingEffectLabel.textContent = "Cooking Effect:";
     const cookingEffect = document.createElement("p");
     cookingEffect.textContent = wordsToUpperCase(data.cooking_effect);
-    itemInfo.append(cookingEffectLabel, cookingEffect);
+    itemtxtConatiner.append(cookingEffectLabel, cookingEffect); */
+    const cookingEffect = document.createElement("p");
+    cookingEffect.textContent = `Cooking Effect: ${wordsToUpperCase(
+      data.cooking_effect
+    )}`;
+    itemtxtConatiner.append(cookingEffect);
   }
 
   itemInfo.showModal();

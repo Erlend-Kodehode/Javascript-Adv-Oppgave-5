@@ -1,38 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
     <script src="app.js" defer></script>
     <title>Hyrule compendium</title>
   </head>
-  <body>
-    <header id="header">
+  <body class="flex">
+    <header id="header" class="flex">
       <h1>Hyrule compendium</h1>
-      <button id="search-btn">Search</button>
-      <!-- <input type="search" id="search" /> -->
-      <!-- <form id="search">
-        <input type="search" name="user-input" id="user-input" />
-        <input type="submit" value="Search" />
-      </form> -->
-      <!-- <select name="game" id="game-selector">
-        <option value="botw">Breath of the Wild</option>
-        <option value="totk">Tears of the Kingdom</option>
-      </select> -->
-      <!-- <div id="master-container">
-        <input type="checkbox" id="master-toggle" />
-        <label for="master-toggle">Master mode</label>
-      </div> -->
-      <select name="category" id="category">
-        <option value="creatures">Creatures</option>
-        <option value="equipment">Equipment</option>
-        <option value="materials">Materials</option>
-        <option value="monsters">Monsters</option>
-        <option value="treasure">Treasure</option>
-      </select>
+      <div id="ui" class="flex">
+        <button id="search-btn" class="flex ui-element">
+          <img
+            src="Images/magnifying-glass.svg"
+            id="search-img"
+            alt="Search button"
+          />
+        </button>
+        <select name="category" id="category" class="ui-element">
+          <option value="creatures">Creatures</option>
+          <option value="equipment">Equipment</option>
+          <option value="materials">Materials</option>
+          <option value="monsters">Monsters</option>
+          <option value="treasure">Treasure</option>
+        </select>
+      </div>
     </header>
     <main id="container"></main>
-    <dialog id="item-info"></dialog>
+    <dialog id="item-info">
+      <div class="flex">
+        <img id="item-img" src="" />
+        <div id="txt-container" class="flex"></div>
+      </div>
+    </dialog>
   </body>
 </html>
