@@ -135,6 +135,7 @@ function generateSingle(data) {
   //appending
   itemtxtConatiner.append(itemName, itemDesc, itemLocations);
 
+  //creates a list of items dropped by the entry if there is data for it
   if (data.drops) {
     const itemDrops = document.createElement("ul");
     itemDrops.textContent = "Drops:";
@@ -146,6 +147,7 @@ function generateSingle(data) {
     itemtxtConatiner.append(itemDrops);
   }
 
+  //creates attack and defense stats if there is data for it
   if (data.properties) {
     if (data.properties.attack > 0) {
       const itemAttack = document.createElement("p");
@@ -159,23 +161,15 @@ function generateSingle(data) {
     }
   }
 
+  //creates a paragraph to show the amount of hearts the entry recovers if there is data for it
   if (data.hearts_recovered) {
-    /* const heartsRecoveredLabel = document.createElement("p");
-    heartsRecoveredLabel.textContent = "Hearts Recovered:";
-    const heartsRecovered = document.createElement("p");
-    heartsRecovered.textContent = data.hearts_recovered;
-    itemtxtConatiner.append(heartsRecoveredLabel, heartsRecovered); */
     const heartsRecovered = document.createElement("p");
     heartsRecovered.textContent = `Hearts Recovered: ${data.hearts_recovered}`;
     itemtxtConatiner.append(heartsRecovered);
   }
 
+  //creates a paragraph to show the cooking effect of the entry if there is data for it
   if (data.cooking_effect) {
-    /*   const cookingEffectLabel = document.createElement("p");
-    cookingEffectLabel.textContent = "Cooking Effect:";
-    const cookingEffect = document.createElement("p");
-    cookingEffect.textContent = wordsToUpperCase(data.cooking_effect);
-    itemtxtConatiner.append(cookingEffectLabel, cookingEffect); */
     const cookingEffect = document.createElement("p");
     cookingEffect.textContent = `Cooking Effect: ${wordsToUpperCase(
       data.cooking_effect
@@ -183,18 +177,26 @@ function generateSingle(data) {
     itemtxtConatiner.append(cookingEffect);
   }
 
+  //displays the modal
   itemInfo.showModal();
+
+  //creates an eventlistener on the body
   document.body.addEventListener("click", closeModal);
   function closeModal() {
+    //removes the eventlistener and closes the modal
     document.body.removeEventListener("click", closeModal);
     itemInfo.close();
   }
 }
 
-function wordsToUpperCase(name) {
-  const wordArray = name.split(" ");
+//a function that when given a sentence returns said sentence with the first letter of each word in uppercase
+function wordsToUpperCase(sentence) {
+  //makes the received string into an array
+  const wordArray = sentence.split(" ");
+  //goes through each word and makes the first letter capatilized
   wordArray.forEach(
     (word, i) => (wordArray[i] = word[0].toUpperCase() + word.slice(1))
   );
+  //returns the array as a single string
   return wordArray.join(" ");
 }
