@@ -16,6 +16,7 @@ h1 {
   margin: 1rem;
   font-family: "Libre Baskerville", serif;
   font-size: 3em;
+  text-align: center;
 }
 
 .invisible {
@@ -44,11 +45,14 @@ h1 {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   row-gap: 1em;
-  width: 75%;
 }
 
 .list-item > img {
   width: 80%;
+}
+
+.list-item > p {
+  text-align: center;
 }
 
 #header {
@@ -133,4 +137,10 @@ img {
 
 #item-img {
   width: 60%;
+}
+
+@media only screen and (max-width: 900px) {
+  #item-info > div {
+    flex-direction: column;
+  }
 }
