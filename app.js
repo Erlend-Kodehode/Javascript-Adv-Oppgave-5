@@ -13,11 +13,9 @@ let searchText = "";
 let searchInput = null;
 
 //loads data on pageload
-getdata(`category/${categorySelector.value}`);
+getdata(categorySelector.value);
 
 searchBtn.addEventListener("click", () => {
-  //makes the category selector invisible
-  categorySelector.classList.toggle("invisible");
   //changes the styling on the button
   searchBtn.classList.toggle("close");
   //if the search bar already exist removes it
@@ -27,7 +25,7 @@ searchBtn.addEventListener("click", () => {
     searchText = "";
     //changes icon on search button
     searchImg.src = "Images/magnifying-glass.svg";
-    getdata(`category/${categorySelector.value}`);
+    getdata(categorySelector.value);
   } else {
     //changes icon on search button
     searchImg.src = "Images/cross.svg";
@@ -35,11 +33,11 @@ searchBtn.addEventListener("click", () => {
     searchInput = document.createElement("input");
     searchInput.type = "search";
     searchInput.id = "search-input";
-    getdata("all");
+
     //refreshes the list after every input
     searchInput.addEventListener("input", () => {
-      getdata("all");
       searchText = searchInput.value;
+      getdata(categorySelector.value);
     });
     ui.prepend(searchInput);
     searchInput.focus();
@@ -47,9 +45,9 @@ searchBtn.addEventListener("click", () => {
 });
 
 //refreshes list when the category selector changes
-categorySelector.addEventListener("change", () => {
-  getdata(`category/${categorySelector.value}`);
-});
+categorySelector.addEventListener("change", () =>
+  getdata(categorySelector.value)
+);
 
 //function for fetching data
 async function getdata(dataType) {

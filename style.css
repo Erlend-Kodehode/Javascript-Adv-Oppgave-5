@@ -19,11 +19,6 @@ h1 {
   text-align: center;
 }
 
-.invisible {
-  visibility: hidden;
-  position: absolute;
-}
-
 .list-item {
   align-items: center;
   cursor: pointer;
